@@ -1,11 +1,11 @@
 #include "sort.h"
 
 /**
- * quick_sort - sorts an array with the Quicksort algorithm
+ * quick_sort_hoare - sorts an array with the Quicksort algorithm
  * @array: array of ints to sort
  * @size: size of the array
  */
-void quick_sort(int *array, size_t size)
+void quick_sort_hoare(int *array, size_t size)
 {
 	if (size < 2)
 		return;
@@ -28,7 +28,7 @@ void quick_recursion(int *array, int left, int right, size_t size)
 	{
 		piv = partition(array, left, right, size);
 		quick_recursion(array, left, piv - 1, size);
-		quick_recursion(array, piv + 1, right, size);
+		quick_recursion(array, piv, right, size);
 	}
 }
 
@@ -43,33 +43,28 @@ void quick_recursion(int *array, int left, int right, size_t size)
  */
 int partition(int *array, int left, int right, size_t size)
 {
-	int tmp, i;
-	int j;
+	int tmp, pivot = array[right];
+	size_t i, j;
 
 	i = left - 1;
-
-	for (j = left; j < right; j++)
+	j = right + 1;
+	while (1)
 	{
-		if (array[j] < array[right])
-		{
+		do {
 			i++;
-			if (i != j)
-			{
-				tmp = array[i];
-				array[i] = array[j];
-				array[j] = tmp;
-				print_array(array, size);
-			}
+		} while (array[i] < pivot);
+		do {
+			j--;
+		} while (array[j] > pivot);
+		if (i >= j)
+			return (i);
+		if (i != j)
+		{
+			tmp = array[i];
+			array[i] = array[j];
+			array[j] = tmp;
+			print_array(array, size);
 		}
 	}
-
-	if (array[right] < array[i + 1])
-	{
-		tmp = array[i + 1];
-		array[i + 1] = array[right];
-		array[right] = tmp;
-		print_array(array, size);
-	}
-
-	return (i + 1);
+	return (0);
 }
